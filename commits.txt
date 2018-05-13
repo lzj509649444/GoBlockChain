@@ -1,0 +1,140 @@
+     0	6f38102 Init
+     1	822bde7 Implement basic blocks
+     2	2398200 Implement blockchain as a storage of blocks
+     3	b97fb42 Extract Block and Blockchain into separate files
+     4	53c83d4 Capitalize Block.hash
+     5	8767cb3 Improve output
+     6	18fe4a9 Refactor Block.SetHash
+     7	cb8f530 Remove a debug print
+     8	6a8b988 Fix empty byte array initialization
+     9	4692816 Use NewBlock in Blockchain.AddBlock
+    10	8a72066 Use empty PrevBlock in the genesis block
+    11	6fbf7ac Make the output more verbose
+    12	9104fae Rename PrevBlock to PrevBlockHash for clarity
+    13	cc4a2d8 Fix it!
+    14	0f23d64 Implement Proof-of-Work
+    15	94f3654 Output mining progress
+    16	35449eb Clean up and refactor proofofwork.go
+    17	f94bbb4 Improve ConfirmProof and print it out in main()
+    18	d379fde Simplify 'target'
+    19	2a9385d Rename ConfirmProof function to Validate
+    20	fec88e3 Remove a comment
+    21	56cb2de Add README
+    22	8502225 Implement serialization and deserialization of a block
+    23	fdccadf Implement DB persistence
+    24	e6cf54a Refactor NewBlockchain
+    25	a93e1e9 Store a DB connection in Blockchain
+    26	d99bbc1 Add .gitignore
+    27	5247717 Implement basic CLI
+    28	b0791af Improve command line arguments processing
+    29	5b46248 Rework the CLI using 'flag'
+    30	54b6c07 Add an information print when there's no blockchain
+    31	d3b2c5c Update README
+    32	2ba0f1b Implement transactions
+    33	08a211b Integrate transactions into the blockchain
+    34	206f87e Improve block transactions hashing
+    35	46a1654 Fix blocks adding to the blockchain
+    36	8e66369 Fix printChain
+    37	6941c5f Replace 'addblock' command with 'spend'
+    38	95d3f69 Implement Blockchain.FindUTXOs
+    39	f83ccd7 Rework Blockchain.FindUTXOs
+    40	87eb17b Implement 'getbalance' command
+    41	751d791 Implement 'createblockchain' command
+    42	6388b20 Fix unspent transactions finding
+    43	78dbfc6 Minor improvements
+    44	326ecb8 Rename TXInput.LockedBy and TXOutput.Unlock methods
+    45	32dd771 Rename Transaction.GetHash to SetID; add Transaction.ID field
+    46	7904009 Set PoW target to 24
+    47	c748768 genesisCoinbase → genesisCoinbaseData
+    48	f4ae516 Minor improvements
+    49	e89846d Rework UTXO related functions
+    50	d107d92 Final fixes
+    51	373a09b Add a link to the README
+    52	70c04fa Implement address generation and wallets
+    53	24b1938 Rename address.go to wallet.go
+    54	8d7f945 Save wallet to a file
+    55	5a1e6f7 Don't create a wallet when wallet.dat already exists
+    56	caf7174 Use crypto/ecdsa to generate ECDSA key pair
+    57	4805ce1 Implement Base58Decode
+    58	5b0e4ec Allow to create multiple wallets
+    59	deb7e2c Implement 'listaddresses' CLI command
+    60	7510598 Update usage
+    61	2b0619e Improve NewWallets and fix comments
+    62	6b40010 In the 'printchain' command, print transactions as well
+    63	e6eed11 Fix Transaction.SetID
+    64	484d0bb Extract public key hashing into a separate function
+    65	cb17762 Store public key as a byte array
+    66	92be537 Use public key in transactions
+    67	7e8c888 Implement Transaction.Sign and Transaction.Verify
+    68	2ce04f8 Implement transactions signing and verification
+    69	fc0c819 Extract some structs into separate files
+    70	843858d Fix TXInput.UnlocksOutputWith
+    71	80e320a Clean up base58.go
+    72	9421206 Clean up block.go; rework transaction hashing
+    73	bb70b49 Clean up blockchain.go; improve TXInput and TXOutput
+    74	5f9e6c0 Extract CLI commands into separate files
+    75	7290aaa Use Hash funcion to set transaction ID
+    76	a436da6 Implement ValidateAddress
+    77	bf8c5d2 Store input sig and key in different fields; rename TXInput.ScriptPubKey to PubKeyHash
+    78	7b6d569 Fix some initializations
+    79	c0b4d6d Improve the printchain command
+    80	465b85d Fix the 'checksum' function
+    81	b6f7626 Fix Signature resetting
+    82	a6394c7 Fix PubKey resetting
+    83	402b298 Update README
+    84	56ccd7c Implement rewards
+    85	01b9dd2 Implement Blockchain.FindAllUTXO
+    86	2f54328 Implement TXOutputs
+    87	249b7f4 Implement UTXOSet
+    88	7eda539 Improve UTXOSet
+    89	cb78220 Remove the 'address' argument from NewBlockchain, since it's not used anymore
+    90	b15e111 Implement DeserializeOutputs
+    91	c3aa678 Implment UTXOSet.FindUTXO
+    92	e3739ac Use the UTXO set to get balance
+    93	0b7d2ac Remove Blockchain.FindUTXO
+    94	3e491be Use the UTXO set to send coins
+    95	fe34c88 Implement UTXOSet.Update
+    96	99d1134 Update the UTXO set after mining a new block
+    97	4f0e04f Reindex the UTXO set after creating a new blockchain
+    98	47737a2 FindAllUTXO → FindUTXO
+    99	8ef0f2c Add a newline
+   100	337a637 Rename UTXOSet.GetCount to UTXOSet.CountTransactions
+   101	827f124 Refactor something in UTXOSet
+   102	668d209 Implement Merkle tree
+   103	8cafc0e Use Merkle root hash in proof-of-work
+   104	74cbac4 Revert "Fix the 'checksum' function"
+   105	201e7a1 Revert "Fix the 'checksum' function"
+   106	ffac3de Lower the difficulty of PoW
+   107	9b9b571 Fill coinbase transaction data with random bytes
+   108	2e06c0a Update the README
+   109	60a1386 Implement 'startnode' CLI command
+   110	1c5bc46 Implement 'version' command
+   111	7935589 Send 'vrack' in response to 'version'
+   112	4a9f7be Implement 'addr' command
+   113	504b6c8 Set node ID via an env. var
+   114	57f3680 Blockchain file name must depend on node ID
+   115	0c91da0 Wallet file name must depend on node ID
+   116	4acc3ae Update .gitignore
+   117	130cf66 Fix wallet file name
+   118	2734285 Implement block height
+   119	0c59d8c Show block height in 'printchain' command
+   120	9adb5fc Implement 'getblocks' command
+   121	470adef Implement 'block' and 'getdata' commands
+   122	a79d78a Implement Blockchain.AddBlock
+   123	c753df2 Implement the correct way of synchronizing a blockchain
+   124	3cb93b5 Implement 'tx' command (WIP)
+   125	9de40a9 Fix 'version' message exhanging
+   126	150778f Add -mine option to the 'send' command
+   127	13f22d2 Update UTXOSet after adding a new block
+   128	5c4340f Add -miner flag to 'startnode' command
+   129	64d1cc5 When a new block is mined, let everyone know
+   130	a96a5bc Fix the main scenario
+   131	58f9eb7 Update README
+   132	cb32e7c Fix ranging in Base58Encode and Base58Decode
+   133	989569c Don't output every hash onto console, its too slow
+   134	28de847 :shirt: Fixes crypto/ecdsa.PublicKey composite literal uses unkeyed fields
+   135	0557058 Merge pull request #5 from bigUNO/master
+   136	c5c21fd Merge pull request #4 from denispeplin/patch-1
+   137	46e935c SetID method should use pointer receiver.
+   138	fee9bfd Fix address version processing in Base58 encoding/decoding
+   139	bf64f33 Merge pull request #6 from samguns/part_4
