@@ -17,7 +17,7 @@ type Block struct {
 
 // NewGenesisBlock 创世区块
 func NewGenesisBlock() *Block {
-	return NewBlock("Genesis Block", []byte("0"))
+	return NewBlock("Genesis Block", []byte{})
 }
 
 // NewBlock creates and returns Block
@@ -26,7 +26,7 @@ func NewBlock(data string, PrevBlockHash []byte) *Block {
 		Timestamp:     time.Now().Unix(),
 		Data:          []byte(data),
 		PrevBlockHash: PrevBlockHash,
-		Hash:          []byte("")}
+		Hash:          []byte{}}
 	block.SetHash()
 	return block
 }
