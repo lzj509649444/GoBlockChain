@@ -11,8 +11,8 @@ import (
 type Block struct {
 	Timestamp     int64  // 时间戳
 	Data          []byte // 数据
-	PrevBlockHash []byte // 上一个区块的hash
-	hash          []byte // 区块Hash
+	PrevBlockHash []byte // 上一个区块的Hash
+	Hash          []byte // 区块Hash
 }
 
 // NewGenesisBlock 创世区块
@@ -26,12 +26,12 @@ func NewBlock(data string, PrevBlockHash []byte) *Block {
 		Timestamp:     time.Now().Unix(),
 		Data:          []byte(data),
 		PrevBlockHash: PrevBlockHash,
-		hash:          []byte("")}
+		Hash:          []byte("")}
 	block.SetHash()
 	return block
 }
 
-// SetHash 计算区块的hash
+// SetHash 计算区块的Hash
 func (b *Block) SetHash() {
 
 	strTimeStamp := strconv.FormatInt(b.Timestamp, 10)
@@ -47,5 +47,5 @@ func (b *Block) SetHash() {
 		log.Panic(err)
 	}
 
-	b.hash = h.Sum(nil)
+	b.Hash = h.Sum(nil)
 }

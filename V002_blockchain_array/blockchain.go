@@ -16,6 +16,6 @@ func NewBlockchain() *Blockchain {
 func (blockChain *Blockchain) AddBlock(data string) {
 	prevIndex := len(blockChain.blocks) - 1
 	prevBlock := blockChain.blocks[prevIndex]
-	newBlock := NewBlock(data, prevBlock.hash)
+	newBlock := NewBlock(data, prevBlock.Hash)
 	blockChain.blocks = append(blockChain.blocks, newBlock)
 }
