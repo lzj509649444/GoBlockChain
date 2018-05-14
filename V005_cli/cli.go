@@ -27,6 +27,8 @@ func (cli *CLI) validateArgs() {
 func (cli *CLI) Run() {
 	cli.validateArgs()
 
+	blockchain := NewBlockchain()
+
 	addBlockCmd := flag.NewFlagSet("addblock", flag.ExitOnError)
 	printChainCmd := flag.NewFlagSet("printchain", flag.ExitOnError)
 
@@ -53,10 +55,10 @@ func (cli *CLI) Run() {
 			addBlockCmd.Usage()
 			os.Exit(1)
 		}
-		cli.addBlock(*addBlockData)
+		cli.addBlock(blockchain, *addBlockData)
 	}
 
 	if printChainCmd.Parsed() {
-		cli.printChain()
+		cli.printChain(blockchain)
 	}
 }

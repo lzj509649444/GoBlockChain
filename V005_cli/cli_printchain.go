@@ -5,8 +5,8 @@ import (
 	"strconv"
 )
 
-func (cli *CLI) printChain() {
-	blockchain := NewBlockchain()
+func (cli *CLI) printChain(blockchain *Blockchain) {
+
 	iter := blockchain.Iterator()
 
 	for {
