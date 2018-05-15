@@ -4,5 +4,6 @@ import "fmt"
 
 func (cli *CLI) walletAddress() {
 	wallet := GetWallet()
-	fmt.Printf("Wallet Address: %x\n", wallet.GetAddress())
+	fmt.Printf("Wallet Bytes Address: %x\n", wallet.GetAddress())
+	fmt.Printf("Wallet Readable Address : %s\n", wallet.GetAddress())
 }

@@ -9,12 +9,9 @@ import (
 
 const version = byte(0x00)
 
-// GetAddress returns wallet address
-func (wallet Wallet) GetAddress() []byte {
-	// add this line
-	public := append(wallet.PublicKey.X.Bytes(), wallet.PublicKey.Y.Bytes()...)
-
-	publicSHA256 := sha256.Sum256(public)
+// HashPubKey hashes public key
+func HashPubKey(pubKey []byte) []byte {
+	publicSHA256 := sha256.Sum256(pubKey)
 
 	RIPEMD160Hasher := ripemd160.New()
 	_, err := RIPEMD160Hasher.Write(publicSHA256[:])
@@ -23,13 +20,7 @@ func (wallet Wallet) GetAddress() []byte {
 	}
 	publicRIPEMD160 := RIPEMD160Hasher.Sum(nil)
 
-	versionedPayload := append([]byte{version}, publicRIPEMD160...)
-	checksum := checksum(versionedPayload)
-
-	fullPayload := append(versionedPayload, checksum...)
-	address := Base58Encode(fullPayload)
-
-	return address
+	return publicRIPEMD160
 }
 
 // Checksum ...
@@ -38,4 +29,28 @@ func checksum(payload []byte) []byte {
 	secondSHA := sha256.Sum256(firstSHA[:])
 
 	return secondSHA[:4]
+}
+
+// PublicKeyBytes get PublicKey []byte
+func (wallet Wallet) PublicKeyBytes() []byte {
+	pubKey := append(wallet.PublicKey.X.Bytes(), wallet.PublicKey.Y.Bytes()...)
+	return pubKey[:]
+}
+
+// GetAddress returns wallet address
+// Version  Public key hash                           Checksum
+// 00       62E907B15CBF27D5425399EBF6F0FB50EBB88F18  C29B7D93
+func (wallet Wallet) GetAddress() []byte {
+	//1. RIPEMD160(SHA256(PubKey))
+	pubKeyHash := HashPubKey(wallet.PublicKeyBytes())
+
+	//2. checksum = SHA256(SHA256(version + pubKeyHash)) 前四个字节
+	versionedPayload := append([]byte{version}, pubKeyHash...)
+	checksum := checksum(versionedPayload)
+
+	//3. Base58Encode(version + pubKeyHash + checksum)
+	fullPayload := append(versionedPayload, checksum...)
+	address := Base58Encode(fullPayload)
+
+	return address
 }
