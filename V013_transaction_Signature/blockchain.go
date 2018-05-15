@@ -124,6 +124,13 @@ func getLastHash(blockchain *Blockchain) []byte {
 
 // MineBlock mines a new block with the provided transactions
 func (blockchain *Blockchain) MineBlock(transactions []*Transaction) {
+
+	for _, tx := range transactions {
+		if blockchain.VerifyTransaction(tx) != true {
+			log.Panic("ERROR: Invalid transaction")
+		}
+	}
+
 	lastHash := getLastHash(blockchain)
 	newBlock := NewBlock(transactions, lastHash)
 

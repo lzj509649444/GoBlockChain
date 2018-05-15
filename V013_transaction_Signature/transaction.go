@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bytes"
-	"crypto/sha256"
-	"encoding/gob"
 	"fmt"
-	"log"
+	"strings"
 )
 
 const subsidy = 10
@@ -17,18 +14,28 @@ type Transaction struct {
 	Vout []TXOutput
 }
 
-// SetID sets ID of a transaction
-func (tx Transaction) SetID() {
-	var encoded bytes.Buffer
-	var hash [32]byte
+// String returns a human-readable representation of a transaction
+func (transaction Transaction) String() string {
+	var lines []string
 
-	enc := gob.NewEncoder(&encoded)
-	err := enc.Encode(tx)
-	if err != nil {
-		log.Panic(err)
+	lines = append(lines, fmt.Sprintf("{ID: %x", transaction.ID))
+
+	for i, input := range transaction.Vin {
+
+		lines = append(lines, fmt.Sprintf("  Input %d:", i))
+		lines = append(lines, fmt.Sprintf("    TXID: %x", input.Txid))
+		lines = append(lines, fmt.Sprintf("    Out: %d", input.Vout))
+		lines = append(lines, fmt.Sprintf("    Signature: %x", input.Signature))
+		lines = append(lines, fmt.Sprintf("    PubKey: %x", input.PubKey))
 	}
-	hash = sha256.Sum256(encoded.Bytes())
-	tx.ID = hash[:]
+
+	for i, output := range transaction.Vout {
+		lines = append(lines, fmt.Sprintf("  Output %d:", i))
+		lines = append(lines, fmt.Sprintf("    Value: %d", output.Value))
+		lines = append(lines, fmt.Sprintf("    Script: %x} ", output.PubKeyHash))
+	}
+
+	return strings.Join(lines, "\n")
 }
 
 // NewCoinbaseTX creates a new coinbase transaction
@@ -37,23 +44,15 @@ func NewCoinbaseTX(to, data string) *Transaction {
 		data = fmt.Sprintf("Reward to '%s'", to)
 	}
 
-	txinput := TXInput{
-		Txid:      []byte{},
-		Vout:      -1,
-		ScriptSig: []byte(data)}
-
+	txinput := NewCoinBaseTXInput(data)
 	txoutput := NewTXOutput(subsidy, to)
 
 	tx := Transaction{
 		ID:   nil,
 		Vin:  []TXInput{txinput},
 		Vout: []TXOutput{txoutput}}
-	tx.SetID()
+	//tx.SetID()
+	tx.ID = tx.Hash()
 
 	return &tx
-}
-
-// IsCoinbase checks whether the transaction is coinbase
-func (tx Transaction) IsCoinbase() bool {
-	return len(tx.Vin) == 1 && len(tx.Vin[0].Txid) == 0 && tx.Vin[0].Vout == -1
 }

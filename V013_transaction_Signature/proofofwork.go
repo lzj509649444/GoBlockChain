@@ -49,9 +49,6 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 	var hash [32]byte
 	nonce := 0
 
-	// fmt.Printf("Mining the block containing \"%s\"\n", pow.block.Data)
-	fmt.Printf("Block: %+v\n", pow.block)
-	pow.block.printTransactions()
 	fmt.Println("Mining a new block")
 
 	for nonce < maxNonce {

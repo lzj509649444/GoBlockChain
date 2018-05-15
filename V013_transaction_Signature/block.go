@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -16,10 +18,19 @@ type Block struct {
 	Nonce         int
 }
 
-func (block *Block) printTransactions() {
-	for idx, tx := range block.Transactions {
-		fmt.Printf("tx: %d - %+v\n", idx, tx)
-	}
+func (block *Block) String() string {
+	var lines []string
+
+	lines = append(lines, fmt.Sprintf("{Timestamp: %d", block.Timestamp))
+	lines = append(lines, fmt.Sprintf("Transactions: %s", block.Transactions))
+	lines = append(lines, fmt.Sprintf("PrevBlockHash: %x", block.PrevBlockHash))
+	lines = append(lines, fmt.Sprintf("Hash: %x", block.Hash))
+	lines = append(lines, fmt.Sprintf("Nonce: %x}", block.Nonce))
+
+	pow := NewProofOfWork(block)
+	lines = append(lines, fmt.Sprintf("PoW: %s", strconv.FormatBool(pow.Validate())))
+
+	return strings.Join(lines, "\n")
 }
 
 // HashTransactions returns a hash of the transactions in the block
@@ -54,6 +65,7 @@ func NewBlock(transactions []*Transaction, PrevBlockHash []byte) *Block {
 	nonce, hash := pow.Run()
 	block.Hash = hash[:]
 	block.Nonce = nonce
+	fmt.Printf("Block: %s\n", pow.block)
 
 	return block
 }
