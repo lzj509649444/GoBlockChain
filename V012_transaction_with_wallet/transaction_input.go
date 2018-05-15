@@ -22,6 +22,7 @@ func (in *TXInput) UnlocksOutputWith(pubKeyHash []byte) bool {
 }
 
 // NewTXInput create a new NewTXInput
+// ScriptSig存的是公钥
 func NewTXInput(txID []byte, outIndex int, wallet Wallet) TXInput {
 	input := TXInput{
 		Txid:      txID,

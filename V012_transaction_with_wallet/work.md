@@ -12,8 +12,8 @@
 7. TXOutput.ScriptPubKey = to.hashPubKey
 
 总结：
-1. TXInput.ScriptSig 存储钱包的PubKeyBytes，why?
-2. TXOutput.ScriptPubKey 存储地址的hashPubKey
+1. TXInput.ScriptSig 存储钱包的PubKeyBytes公钥，why?公钥验证
+2. TXOutput.ScriptPubKey 存储地址的hashPubKey，address经过Base58Decode得到的，如果只存储公钥，那么只要知道公钥的人，就可以改变交易的发起者from
 
 
 # test
