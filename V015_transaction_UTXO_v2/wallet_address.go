@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"log"
 
@@ -8,6 +9,7 @@ import (
 )
 
 const version = byte(0x00)
+const addressChecksumLen = 4
 
 // HashPubKey hashes public key
 func HashPubKey(pubKey []byte) []byte {
@@ -28,7 +30,8 @@ func checksum(payload []byte) []byte {
 	firstSHA := sha256.Sum256(payload)
 	secondSHA := sha256.Sum256(firstSHA[:])
 
-	return secondSHA[:4]
+	// return secondSHA[:4]
+	return secondSHA[len(secondSHA)-addressChecksumLen:]
 }
 
 // PublicKeyBytes get PublicKey []byte
@@ -55,9 +58,20 @@ func (wallet Wallet) GetAddress() []byte {
 	return address
 }
 
+// ValidateAddress check if address if valid
+func ValidateAddress(address string) bool {
+	pubKeyHash := Base58Decode([]byte(address))
+	actualChecksum := pubKeyHash[len(pubKeyHash)-addressChecksumLen:]
+	version := pubKeyHash[0]
+	pubKeyHash = pubKeyHash[1 : len(pubKeyHash)-addressChecksumLen]
+	targetChecksum := checksum(append([]byte{version}, pubKeyHash...))
+
+	return bytes.Compare(actualChecksum, targetChecksum) == 0
+}
+
 // GetHashPubKey get hashPubKey
 func GetHashPubKey(address string) []byte {
 	hashPubKey := Base58Decode([]byte(address))
-	hashPubKey = hashPubKey[1 : len(hashPubKey)-4]
+	hashPubKey = hashPubKey[1 : len(hashPubKey)-addressChecksumLen]
 	return hashPubKey
 }

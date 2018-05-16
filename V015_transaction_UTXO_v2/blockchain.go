@@ -123,7 +123,7 @@ func getLastHash(blockchain *Blockchain) []byte {
 }
 
 // MineBlock mines a new block with the provided transactions
-func (blockchain *Blockchain) MineBlock(transactions []*Transaction) {
+func (blockchain *Blockchain) MineBlock(transactions []*Transaction) *Block {
 
 	for _, tx := range transactions {
 		if blockchain.VerifyTransaction(tx) != true {
@@ -154,4 +154,5 @@ func (blockchain *Blockchain) MineBlock(transactions []*Transaction) {
 	if err != nil {
 		log.Panic(err)
 	}
+	return newBlock
 }

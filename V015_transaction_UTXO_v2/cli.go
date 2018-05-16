@@ -21,6 +21,7 @@ func (cli *CLI) printUsage() {
 	fmt.Println("  createwallets - Create empty wallets")
 	fmt.Println("  addwallet - Add a Wallet To wallets")
 	fmt.Println("  printwallets - Print all Wallets Address From Wallets")
+	fmt.Println("  reindexutxo - Rebuilds the UTXO set")
 }
 
 func (cli *CLI) validateArgs() {
@@ -40,6 +41,7 @@ func (cli *CLI) Run() {
 	getBalanceCmd := flag.NewFlagSet("getbalance", flag.ExitOnError)
 	// createWalletCmd := flag.NewFlagSet("createwallet", flag.ExitOnError)
 	// walletAddressCmd := flag.NewFlagSet("walletAddress", flag.ExitOnError)
+	reindexUTXOCmd := flag.NewFlagSet("reindexutxo", flag.ExitOnError)
 
 	createWalletsCmd := flag.NewFlagSet("createwallets", flag.ExitOnError)
 	addWalletCmd := flag.NewFlagSet("addwallet", flag.ExitOnError)
@@ -97,6 +99,11 @@ func (cli *CLI) Run() {
 		if err != nil {
 			log.Panic(err)
 		}
+	case "reindexutxo":
+		err := reindexUTXOCmd.Parse(os.Args[2:])
+		if err != nil {
+			log.Panic(err)
+		}
 	default:
 		cli.printUsage()
 		os.Exit(1)
@@ -149,6 +156,10 @@ func (cli *CLI) Run() {
 
 	if printWalletsCmd.Parsed() {
 		cli.printWallets()
+	}
+
+	if reindexUTXOCmd.Parsed() {
+		cli.reindexUTXO()
 	}
 
 }
