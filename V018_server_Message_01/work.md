@@ -1,3 +1,5 @@
+Messages: version,verack,addr
+
 server_message_01.go
 
 1. start dnsNodeID=4000
