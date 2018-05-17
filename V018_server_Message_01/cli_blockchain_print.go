@@ -6,7 +6,7 @@ import (
 
 func (cli *CLI) printChain() {
 
-	blockchain := GetBlockchain(getNodeID())
+	blockchain := GetBlockchain()
 
 	iter := blockchain.Iterator()
 

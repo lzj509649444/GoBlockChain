@@ -10,8 +10,6 @@ import (
 	"os"
 )
 
-const walletsFile = "wallets.dat"
-
 // Wallets stores a collection of wallets
 type Wallets struct {
 	Wallets map[string]*Wallet
@@ -37,8 +35,15 @@ func NewWallets() *Wallets {
 	return &wallets
 }
 
+func getWalletsFile() string {
+	walletsFile := "wallets_%d.dat"
+	nodeID := getNodeID()
+	file := fmt.Sprintf(walletsFile, nodeID)
+	return file
+}
+
 func walletsIsExits() bool {
-	if _, err := os.Stat(walletsFile); os.IsNotExist(err) {
+	if _, err := os.Stat(getWalletsFile()); os.IsNotExist(err) {
 		return false
 	}
 	return true
@@ -56,7 +61,7 @@ func (wallets Wallets) SaveToFile() {
 		log.Panic(err)
 	}
 
-	err = ioutil.WriteFile(walletsFile, content.Bytes(), 0644)
+	err = ioutil.WriteFile(getWalletsFile(), content.Bytes(), 0644)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -69,7 +74,7 @@ func GetWallets() *Wallets {
 		os.Exit(1)
 	}
 
-	fileContent, err := ioutil.ReadFile(walletsFile)
+	fileContent, err := ioutil.ReadFile(getWalletsFile())
 	if err != nil {
 		log.Panic(err)
 	}

@@ -8,7 +8,6 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-const dbFile = "blockchain_%d.db"
 const blocksBucket = "blocks"
 const genesisCoinbaseData = "genesis coin base"
 
@@ -18,8 +17,15 @@ type Blockchain struct {
 	db  *bolt.DB
 }
 
-func dbExists(dbFile string) bool {
-	if _, err := os.Stat(dbFile); os.IsNotExist(err) {
+func getDBFile() string {
+	dbFile := "blockchain_%d.db"
+	nodeID := getNodeID()
+	file := fmt.Sprintf(dbFile, nodeID)
+	return file
+}
+
+func dbExists() bool {
+	if _, err := os.Stat(getDBFile()); os.IsNotExist(err) {
 		return false
 	}
 
@@ -49,15 +55,15 @@ func newBucket(address string, tx *bolt.Tx) []byte {
 }
 
 // CreateBlockchain creates a new blockchain DB
-func CreateBlockchain(address string, nodeID int) *Blockchain {
-	dbFile := fmt.Sprintf(dbFile, nodeID)
-	if dbExists(dbFile) {
+func CreateBlockchain(address string) *Blockchain {
+
+	if dbExists() {
 		fmt.Println("Blockchain already exists.")
 		os.Exit(1)
 	}
 
 	var tip []byte
-	db, err := bolt.Open(dbFile, 0600, nil)
+	db, err := bolt.Open(getDBFile(), 0600, nil)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -78,16 +84,15 @@ func CreateBlockchain(address string, nodeID int) *Blockchain {
 }
 
 // GetBlockchain creates a new Blockchain with genesis Block
-func GetBlockchain(nodeID int) *Blockchain {
-	dbFile := fmt.Sprintf(dbFile, nodeID)
+func GetBlockchain() *Blockchain {
 
-	if dbExists(dbFile) == false {
+	if dbExists() == false {
 		fmt.Println("No existing blockchain found. Create one first.")
 		os.Exit(1)
 	}
 
 	var tip []byte
-	db, err := bolt.Open(dbFile, 0600, nil)
+	db, err := bolt.Open(getDBFile(), 0600, nil)
 	if err != nil {
 		log.Panic(err)
 	}

@@ -13,7 +13,7 @@ func (cli *CLI) send(from, to string, amount int) {
 		log.Panic("ERROR: Recipient address is not valid")
 	}
 
-	blockchain := GetBlockchain(getNodeID())
+	blockchain := GetBlockchain()
 	defer blockchain.db.Close()
 
 	utxoSet := UTXOSet{Blockchain: blockchain}

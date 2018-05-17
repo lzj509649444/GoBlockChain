@@ -12,15 +12,22 @@ import (
 	"os"
 )
 
-const walletFile = "wallet.dat"
-
 // Wallet ...
 type Wallet struct {
 	PrivateKey ecdsa.PrivateKey
 	PublicKey  ecdsa.PublicKey
 }
 
+func getWalletFile() string {
+	walletFile := "wallet_%d.dat"
+	nodeID := getNodeID()
+	file := fmt.Sprintf(walletFile, nodeID)
+	return file
+}
+
 func walletIsExits() bool {
+	nodeID := getNodeID()
+	walletFile := fmt.Sprintf(getWalletFile(), nodeID)
 	if _, err := os.Stat(walletFile); os.IsNotExist(err) {
 		return false
 	}
@@ -66,7 +73,7 @@ func (wallet Wallet) SaveToFile() {
 		log.Panic(err)
 	}
 
-	err = ioutil.WriteFile(walletFile, content.Bytes(), 0644)
+	err = ioutil.WriteFile(getWalletFile(), content.Bytes(), 0644)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -79,7 +86,7 @@ func GetWallet() *Wallet {
 		os.Exit(1)
 	}
 
-	fileContent, err := ioutil.ReadFile(walletFile)
+	fileContent, err := ioutil.ReadFile(getWalletFile())
 	if err != nil {
 		log.Panic(err)
 	}

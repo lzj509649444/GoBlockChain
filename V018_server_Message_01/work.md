@@ -28,11 +28,27 @@ Received verack command
 Received addr command
 There are 2 known nodes now!
 
-3. blockchain NodeID name
-4. cli: func getNodeID()
+3. cli: func getNodeID()
+4. blockchain NodeID name: getDBFile
+5. getWalletFile
+6. getWalletsFile
 
-NODE_ID=4000 ./main createblockchain -address 1FgRHeYoRXEnJ2YqtYwEkZMcATgDWkv8XL
+NODE_ID=4000 ./main createwallets
 
-NODE_ID=4000 ./main getbalance -address 1FgRHeYoRXEnJ2YqtYwEkZMcATgDWkv8XL
+NODE_ID=4000 ./main addwallet
+wallet address:  1EVT8d6YBvfeE4SYCCRfoWL6ZXk9A3hPU1
 
-NODE_ID=4000 ./main send -from 1FgRHeYoRXEnJ2YqtYwEkZMcATgDWkv8XL -to 1Hu2xHZV97GSTDezZf7mtLfaXXwjPHcV6a -amount 3
+NODE_ID=4000 ./main addwallet
+wallet address:  1Ndq99Y81UuVJ11jwMrMNN17kXMMMYh8Ez
+
+NODE_ID=4000 ./main addwallet
+wallet address:  17pNW3EuirpDDXyrY5oqBCuMvRNL27uKjk
+
+
+NODE_ID=4000 ./main createblockchain -address 1EVT8d6YBvfeE4SYCCRfoWL6ZXk9A3hPU1
+
+NODE_ID=4000 ./main getbalance -address 1EVT8d6YBvfeE4SYCCRfoWL6ZXk9A3hPU1
+
+NODE_ID=4000 ./main send -from 1EVT8d6YBvfeE4SYCCRfoWL6ZXk9A3hPU1 -to 1Ndq99Y81UuVJ11jwMrMNN17kXMMMYh8Ez -amount 3
+
+NODE_ID=4000 ./main getbalance -address 1Ndq99Y81UuVJ11jwMrMNN17kXMMMYh8Ez

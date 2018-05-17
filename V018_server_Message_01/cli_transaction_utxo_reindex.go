@@ -5,7 +5,7 @@ import (
 )
 
 func (cli *CLI) reindexUTXO() {
-	blockchain := GetBlockchain(getNodeID())
+	blockchain := GetBlockchain()
 
 	utxoSet := UTXOSet{blockchain}
 	utxoSet.Reindex()
