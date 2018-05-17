@@ -139,16 +139,23 @@ func (blockchain *Blockchain) MineBlock(transactions []*Transaction) *Block {
 	}
 
 	lastHash := getLastHash(blockchain)
-	newBlock := NewBlock(transactions, lastHash)
+	var newBlock *Block
 
 	err := blockchain.db.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(blocksBucket))
-		errr := b.Put(newBlock.Hash, newBlock.Serialize())
+		bucket := tx.Bucket([]byte(blocksBucket))
+
+		blockData := bucket.Get(lastHash)
+		block := DeserializeBlock(blockData)
+		lastHeight := block.Height
+
+		newBlock = NewBlock(transactions, lastHash, lastHeight+1)
+
+		errr := bucket.Put(newBlock.Hash, newBlock.Serialize())
 		if errr != nil {
 			return errr
 		}
 
-		errr = b.Put([]byte("l"), newBlock.Hash)
+		errr = bucket.Put([]byte("l"), newBlock.Hash)
 		if errr != nil {
 			return errr
 		}

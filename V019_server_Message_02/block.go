@@ -14,6 +14,7 @@ type Block struct {
 	PrevBlockHash []byte // 上一个区块的Hash
 	Hash          []byte // 区块Hash
 	Nonce         int
+	Height        int
 }
 
 func (block *Block) String() string {
@@ -23,7 +24,8 @@ func (block *Block) String() string {
 	lines = append(lines, fmt.Sprintf("Transactions: %s", block.Transactions))
 	lines = append(lines, fmt.Sprintf("PrevBlockHash: %x", block.PrevBlockHash))
 	lines = append(lines, fmt.Sprintf("Hash: %x", block.Hash))
-	lines = append(lines, fmt.Sprintf("Nonce: %x}", block.Nonce))
+	lines = append(lines, fmt.Sprintf("Nonce: %d}", block.Nonce))
+	lines = append(lines, fmt.Sprintf("Height: %d}", block.Height))
 
 	pow := NewProofOfWork(block)
 	lines = append(lines, fmt.Sprintf("PoW: %s", strconv.FormatBool(pow.Validate())))
@@ -46,16 +48,17 @@ func (block *Block) HashTransactions() []byte {
 // NewGenesisBlock 创世区块
 func NewGenesisBlock(coinbase *Transaction) *Block {
 	transactions := []*Transaction{coinbase}
-	return NewBlock(transactions, []byte{})
+	return NewBlock(transactions, []byte{}, 0)
 }
 
 // NewBlock creates and returns Block
-func NewBlock(transactions []*Transaction, PrevBlockHash []byte) *Block {
+func NewBlock(transactions []*Transaction, PrevBlockHash []byte, height int) *Block {
 	block := &Block{
 		Timestamp:     time.Now().Unix(),
 		Transactions:  transactions,
 		PrevBlockHash: PrevBlockHash,
-		Hash:          []byte{}}
+		Hash:          []byte{},
+		Height:        height}
 
 	// block.SetHash()
 	pow := NewProofOfWork(block)
