@@ -97,20 +97,16 @@ func GetBlockchain() *Blockchain {
 		log.Panic(err)
 	}
 
-	err = db.Update(func(tx *bolt.Tx) error {
+	err = db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(blocksBucket))
-
 		tip = bucket.Get([]byte("l"))
-
 		return nil
 	})
-
 	if err != nil {
 		log.Panic(err)
 	}
 
 	blockchain := Blockchain{tip, db}
-
 	return &blockchain
 }
 

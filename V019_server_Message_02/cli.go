@@ -23,7 +23,7 @@ func (cli *CLI) printUsage() {
 	fmt.Println("  addwallet - Add a Wallet To wallets")
 	fmt.Println("  printwallets - Print all Wallets Address From Wallets")
 	fmt.Println("  reindexutxo - Rebuilds the UTXO set")
-	fmt.Println("  startnode -node-id NODE_ID - Start a node with specified ID")
+	fmt.Println("  startnode - Start a node with ID specified in NODE_ID env. var")
 
 }
 
@@ -71,7 +71,6 @@ func (cli *CLI) Run() {
 	sendTo := sendCmd.String("to", "", "Destination wallet address")
 	sendAmount := sendCmd.Int("amount", 0, "Amount to send")
 	getBalanceAddress := getBalanceCmd.String("address", "", "The address to get balance for")
-	startNodeID := startNodeCmd.Int("node-id", 0, "Node ID")
 
 	switch os.Args[1] {
 	case "createblockchain":
@@ -188,11 +187,7 @@ func (cli *CLI) Run() {
 	}
 
 	if startNodeCmd.Parsed() {
-		if *startNodeID == 0 {
-			startNodeCmd.Usage()
-			os.Exit(1)
-		}
-		cli.startNode(*startNodeID)
+		cli.startNode()
 	}
 
 }

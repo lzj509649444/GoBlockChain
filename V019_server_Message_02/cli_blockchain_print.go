@@ -11,6 +11,7 @@ func (cli *CLI) printChain() {
 	iter := blockchain.Iterator()
 
 	for {
+		fmt.Println("for...")
 		block := iter.Next()
 
 		fmt.Printf("Block: %s\n", block)

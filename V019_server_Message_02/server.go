@@ -63,7 +63,7 @@ func sendData(addr string, data []byte) {
 	}
 }
 
-func handleConnection(conn net.Conn) {
+func handleConnection(conn net.Conn, blockchain *Blockchain) {
 	requestBytes, err := ioutil.ReadAll(conn)
 
 	if err != nil {
@@ -76,9 +76,17 @@ func handleConnection(conn net.Conn) {
 	case "addr":
 		handleAddr(requestBytes)
 	case "version":
-		handleVersion(requestBytes)
+		handleVersion(requestBytes, blockchain)
 	case "verack":
 		//
+	case "block":
+		handleBlock(requestBytes, blockchain)
+	case "inv":
+		handleInv(requestBytes, blockchain)
+	case "getblocks":
+		handleGetBlocks(requestBytes, blockchain)
+	case "getdata":
+		handleGetData(requestBytes, blockchain)
 	default:
 		fmt.Println("Unknown command!")
 	}
@@ -100,8 +108,10 @@ func StartServer(nodeID int) {
 	}
 	defer listen.Close()
 
+	blockchain := GetBlockchain()
+
 	if nodeID != dnsNodeID {
-		sendVersion(fmt.Sprintf("localhost:%d", dnsNodeID))
+		sendVersion(fmt.Sprintf("localhost:%d", dnsNodeID), blockchain)
 	}
 
 	for {
@@ -109,7 +119,7 @@ func StartServer(nodeID int) {
 		if err != nil {
 			log.Panic(err)
 		}
-		go handleConnection(conn)
+		go handleConnection(conn, blockchain)
 	}
 
 }
