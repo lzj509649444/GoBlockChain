@@ -22,6 +22,8 @@ func (cli *CLI) printUsage() {
 	fmt.Println("  addwallet - Add a Wallet To wallets")
 	fmt.Println("  printwallets - Print all Wallets Address From Wallets")
 	fmt.Println("  reindexutxo - Rebuilds the UTXO set")
+	fmt.Println("  startnode -node-id NODE_ID - Start a node with specified ID")
+
 }
 
 func (cli *CLI) validateArgs() {
@@ -47,11 +49,14 @@ func (cli *CLI) Run() {
 	addWalletCmd := flag.NewFlagSet("addwallet", flag.ExitOnError)
 	printWalletsCmd := flag.NewFlagSet("printwallets", flag.ExitOnError)
 
+	startNodeCmd := flag.NewFlagSet("startnode", flag.ExitOnError)
+
 	createBlockchainAddress := createBlockchainCmd.String("address", "", "The address to send genesis block reward to")
 	sendFrom := sendCmd.String("from", "", "Source wallet address")
 	sendTo := sendCmd.String("to", "", "Destination wallet address")
 	sendAmount := sendCmd.Int("amount", 0, "Amount to send")
 	getBalanceAddress := getBalanceCmd.String("address", "", "The address to get balance for")
+	startNodeID := startNodeCmd.Int("node-id", 0, "Node ID")
 
 	switch os.Args[1] {
 	case "createblockchain":
@@ -101,6 +106,11 @@ func (cli *CLI) Run() {
 		}
 	case "reindexutxo":
 		err := reindexUTXOCmd.Parse(os.Args[2:])
+		if err != nil {
+			log.Panic(err)
+		}
+	case "startnode":
+		err := startNodeCmd.Parse(os.Args[2:])
 		if err != nil {
 			log.Panic(err)
 		}
@@ -160,6 +170,14 @@ func (cli *CLI) Run() {
 
 	if reindexUTXOCmd.Parsed() {
 		cli.reindexUTXO()
+	}
+
+	if startNodeCmd.Parsed() {
+		if *startNodeID == 0 {
+			startNodeCmd.Usage()
+			os.Exit(1)
+		}
+		cli.startNode(*startNodeID)
 	}
 
 }

@@ -1,22 +1,5 @@
-1. merkle_tree.go
-2. block.go
-func (block *Block) HashTransactions() []byte
+1. server.go
 
-
-./main addwallet
-wallet address:  1FgRHeYoRXEnJ2YqtYwEkZMcATgDWkv8XL
-Add Wallet Success !
-
- ./main addwallet
-wallet address:  1F2WH1wD2eGKkoYG74czFmCbE1qBaGHCXP
-Add Wallet Success !
-
-./main addwallet
-wallet address:  1Hu2xHZV97GSTDezZf7mtLfaXXwjPHcV6a
-Add Wallet Success !
-
-./main createblockchain -address 1FgRHeYoRXEnJ2YqtYwEkZMcATgDWkv8XL
-
-./main send -from 1FgRHeYoRXEnJ2YqtYwEkZMcATgDWkv8XL -to 1Hu2xHZV97GSTDezZf7mtLfaXXwjPHcV6a -amount 3
-
-./main send -from 1Hu2xHZV97GSTDezZf7mtLfaXXwjPHcV6a -to 1F2WH1wD2eGKkoYG74czFmCbE1qBaGHCXP -amount 2
+2. /main startnode -node-id 4000
+echo -n "hello world" | nc localhost 4000
+echo -n "version" | nc localhost 4000
