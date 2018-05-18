@@ -1,11 +1,25 @@
 package main
 
-import "bytes"
+import (
+	"bytes"
+	"fmt"
+	"strings"
+)
 
 // TXOutput represents a transaction output
 type TXOutput struct {
 	Value      int
 	PubKeyHash []byte
+}
+
+// String returns a human-readable representation of a transaction
+func (out TXOutput) String() string {
+	var lines []string
+
+	lines = append(lines, fmt.Sprintf("  Output:"))
+	lines = append(lines, fmt.Sprintf("    Value: %d", out.Value))
+	lines = append(lines, fmt.Sprintf("    Script: %x} ", out.PubKeyHash))
+	return strings.Join(lines, "\n")
 }
 
 // Unlock checks if the output can be used by the owner of the pubkey

@@ -44,11 +44,14 @@ func (utxoSet UTXOSet) Reindex() {
 		bucket := tx.Bucket(bucketName)
 
 		for txID, outs := range UTXO {
-			fmt.Printf("outs len: %d\n", len(outs.Outputs))
 			key, errr := hex.DecodeString(txID)
 			if errr != nil {
 				log.Panic(errr)
 			}
+
+			fmt.Printf("transaction ID: %x\n", key)
+			fmt.Printf("%s\n", outs)
+			fmt.Println()
 
 			errr = bucket.Put(key, outs.Serialize())
 			if errr != nil {
@@ -73,6 +76,7 @@ func (blockchain *Blockchain) FindUTXO() map[string]TXOutputs {
 		block := iter.Next()
 
 		for _, tx := range block.Transactions {
+			fmt.Printf("transaction ID: %x\n", tx.ID)
 			txID := hex.EncodeToString(tx.ID)
 
 		Outputs:
@@ -85,6 +89,8 @@ func (blockchain *Blockchain) FindUTXO() map[string]TXOutputs {
 						}
 					}
 				}
+
+				fmt.Printf("unspent TXOutput: %s\n", out)
 
 				outs := UTXO[txID]
 				outs.Outputs = append(outs.Outputs, out)

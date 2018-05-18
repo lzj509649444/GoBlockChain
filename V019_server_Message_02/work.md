@@ -1,5 +1,7 @@
 https://en.bitcoin.it/wiki/Protocol_documentation#inv
 
+从4000中心节点区块同步
+
 Messages: version,verack,addr
 
 1. block Height,MineBlock

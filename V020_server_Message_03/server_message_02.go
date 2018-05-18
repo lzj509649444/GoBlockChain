@@ -77,7 +77,7 @@ func handleGetBlocks(request []byte, blockchain *Blockchain) {
 	}
 
 	blocks := blockchain.GetBlockHashes()
-	sendInv(payload.AddrFrom, "blocks", blocks)
+	sendInv(payload.AddrFrom, "block", blocks)
 }
 
 func sendInv(address, kind string, items [][]byte) {
@@ -104,7 +104,7 @@ func handleInv(request []byte, blockchain *Blockchain) {
 
 	fmt.Printf("Recevied inventory with %d %s\n", len(payload.Items), payload.Type)
 
-	if payload.Type == "blocks" {
+	if payload.Type == "block" {
 		blocksInTransit = payload.Items
 
 		blockHash := payload.Items[0]
@@ -221,6 +221,7 @@ func handleBlock(request []byte, blockchain *Blockchain) {
 
 		blocksInTransit = blocksInTransit[1:]
 	} else {
+		fmt.Printf("Reindex UTXO")
 		utxoSet := UTXOSet{blockchain}
 		utxoSet.Reindex()
 	}
@@ -252,6 +253,7 @@ func (blockchain *Blockchain) AddBlock(block *Block) {
 			if err != nil {
 				log.Panic(err)
 			}
+			blockchain.tip = block.Hash
 		}
 
 		return nil

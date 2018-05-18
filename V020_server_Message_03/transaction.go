@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 )
 
 const subsidy = 10
@@ -43,8 +44,13 @@ func (transaction Transaction) String() string {
 
 // NewCoinbaseTX creates a new coinbase transaction
 func NewCoinbaseTX(to, data string) *Transaction {
+	// if data == "" {
+	// 	data = fmt.Sprintf("Reward to '%s'", to)
+	// }
+
 	if data == "" {
-		data = fmt.Sprintf("Reward to '%s'", to)
+		data = fmt.Sprintf("%x", time.Now())
+		fmt.Println("data: ", data)
 	}
 
 	txinput := NewCoinBaseTXInput(data)

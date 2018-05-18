@@ -53,7 +53,18 @@ func commandToBytes(command string) []byte {
 func sendData(addr string, data []byte) {
 	conn, err := net.Dial(protocol, addr)
 	if err != nil {
-		log.Panic(err)
+		fmt.Printf("%s is not available\n", addr)
+		var updatedNodes []string
+
+		for _, node := range knownNodes {
+			if node != addr {
+				updatedNodes = append(updatedNodes, node)
+			}
+		}
+
+		knownNodes = updatedNodes
+
+		return
 	}
 	defer conn.Close()
 
