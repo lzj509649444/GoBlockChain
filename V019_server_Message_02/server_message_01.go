@@ -11,7 +11,7 @@ import (
 
 const nodeVersion = 1
 
-var knownNodes []string
+var knownNodes = []string{"localhost:4000"}
 
 // verack The verack message is sent in reply to version. This message consists of only a message header with the command string "verack"
 type verack struct {
@@ -113,6 +113,7 @@ func handleVersion(request []byte, blockchain *Blockchain) {
 	if !nodeIsKnown(payload.AddrFrom) {
 		knownNodes = append(knownNodes, payload.AddrFrom)
 	}
+	fmt.Printf("knownNodes %s\n", knownNodes)
 
 	// sendVrack(payload.AddrFrom)
 	// sendAddr(payload.AddrFrom)

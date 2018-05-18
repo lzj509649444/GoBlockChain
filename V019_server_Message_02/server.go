@@ -110,8 +110,12 @@ func StartServer(nodeID int) {
 
 	blockchain := GetBlockchain()
 
-	if nodeID != dnsNodeID {
-		sendVersion(fmt.Sprintf("localhost:%d", dnsNodeID), blockchain)
+	// if nodeID != dnsNodeID {
+	// 	sendVersion(fmt.Sprintf("localhost:%d", dnsNodeID), blockchain)
+	// }
+
+	if nodeAddress != knownNodes[0] {
+		sendVersion(knownNodes[0], blockchain)
 	}
 
 	for {

@@ -16,6 +16,9 @@ if nodeID != dnsNodeID {
 5. server_message_02.go
 
 6. startnode cli
+if nodeAddress != knownNodes[0] {
+  sendVersion(knownNodes[0], blockchain)
+}
 
 NODE_ID=4000 ./main createwallets
 
@@ -46,3 +49,40 @@ cp blockchain_genesis.db blockchain_4001.db
 NODE_ID=4001 ./main startnode
 stopnode and check
 NODE_ID=4001 ./main printchain
+
+
+Starting node 4000
+Received version command
+knownNodes [localhost:4000 localhost:4001]
+Received getblocks command
+Received getdata command
+Received getdata command
+Received version command
+knownNodes [localhost:4000 localhost:4001 localhost:4002]
+Received getblocks command
+Received getdata command
+Received getdata command
+
+Starting node 4001
+Received version command
+knownNodes [localhost:4000]
+Received inv command
+Recevied inventory with 2 blocks
+Received block command
+Recevied a new block!
+[[0 3 200 46 181 255 250 230 81 12 60 117 14 83 14 49 27 240 143 150 50 135 240 5 140 22 227 57 31 238 46 54]]
+Received block command
+Recevied a new block!
+[]
+
+Starting node 4002
+Received version command
+knownNodes [localhost:4000]
+Received inv command
+Recevied inventory with 2 blocks
+Received block command
+Recevied a new block!
+[[0 3 200 46 181 255 250 230 81 12 60 117 14 83 14 49 27 240 143 150 50 135 240 5 140 22 227 57 31 238 46 54]]
+Received block command
+Recevied a new block!
+[]
